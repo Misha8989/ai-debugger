@@ -1,4 +1,4 @@
-# AI Bartender
+# AI Debugger
 
 ## Getting Started
 
