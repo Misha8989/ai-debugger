@@ -1,5 +1,5 @@
 const generateCode = async ({
-  drinkIngredients
+  debug
 }) => {
   try {
     const response = await fetch(
@@ -11,7 +11,7 @@ const generateCode = async ({
           Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
         },
         body: JSON.stringify({
-          prompt: `Return every possible alcoholic recipe using only the ingredients ${drinkIngredients}, include step by step instructions for each recipe`,
+          prompt: `Try to Debug this code: ${debug}. If errors are found, return a full overview of the functions and any libraries included, and the language identified.`,
           max_tokens: 300,
           temperature: 0.5,
         }),
@@ -26,10 +26,10 @@ const generateCode = async ({
 };
 
 export default async function handler(req, res) {
-  const { drinkIngredients } = req.body;
+  const { debug } = req.body;
 
   const answer = await generateCode({
-    drinkIngredients
+    debug
   });
 
   res.status(200).json({

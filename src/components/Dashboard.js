@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 
 export default function Dashboard() {
-  const [drinkRecipes, setDrinkRecipes] = useState("");
+  const [debug, setDebug] = useState("");
 
-  const [drinkIngredients, setDrinkIngredients] = useState("");
+  const [brokenCode, setBrokenCode] = useState("");
 
   const [isGenerating, setIsGenerating] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
@@ -16,18 +16,18 @@ export default function Dashboard() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsGenerating(true);
-    const res = await fetch("/api/returnDrinks", {
+    const res = await fetch("/api/returnDebug", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        drinkIngredients
+        brokenCode
       }),
     });
     setIsGenerating(false);
     const data = await res.json();
-    setDrinkRecipes(data.answer);
+    setDebug(data.answer);
   };
 
   return (
@@ -37,17 +37,17 @@ export default function Dashboard() {
           <form onSubmit={(e) => handleSubmit(e)}>
 
             <div className="flex flex-col">
-              <p>Ingredients that I have </p>
-              <label htmlFor="ingredients" className="sr-only">
-                Ingredients
+              <p>My Code </p>
+              <label htmlFor="brokenCode" className="sr-only">
+                Paste Your Code Here
               </label>
               <textarea
                 rows={7}
-                value={drinkIngredients}
-                onChange={(e) => setDrinkIngredients(e.target.value)}
-                name="Ingredients"
-                id="Ingredients"
-                placeholder="ie. Vodka, Cranberry, Sprite, ..."
+                value={brokenCode}
+                onChange={(e) => setBrokenCode(e.target.value)}
+                name="brokenCode"
+                id="brokenCode"
+                placeholder="Paste your broken code here"
                 className="block w-full rounded-md bg-white border border-gray-400 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-4 py-2 placeholder-gray-500 my-2 text-gray-900"
               />
             </div>
@@ -61,7 +61,7 @@ export default function Dashboard() {
               type="submit"
               disabled={isGenerating}
             >
-              {isGenerating ? "Generating..." : "Generate Drinks"}
+              {isGenerating ? "Generating..." : "Generate Debug Overview"}
             </button>
 
           </form>
@@ -74,23 +74,23 @@ export default function Dashboard() {
             </label>
             <textarea
               rows={
-                drinkRecipes === ""
+                debug === ""
                   ? 7
                   : 100
               }
               name="output"
-              value={drinkRecipes}
-              onChange={(e) => setDrinkRecipes(e.target.value)}
-              disabled={drinkRecipes === ""}
+              value={debug}
+              onChange={(e) => setDebug(e.target.value)}
+              disabled={debug === ""}
               id="output"
-              placeholder="AI Generated Drinks"
+              placeholder="AI Response"
               className="block w-full rounded-md bg-white border border-gray-400 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm px-4 py-2 placeholder-gray-500 my-2 text-gray-900"
             />
             <button
               onClick={handleCopy}
               className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               type="submit"
-              disabled={drinkRecipes === ""}
+              disabled={debug === ""}
             >
               {isCopied ? "Copied" : "Copy to Clipboard"}
             </button>
